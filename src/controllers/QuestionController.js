@@ -6,6 +6,7 @@ module.exports = {
         const questionId = req.params.question
         const action = req.params.action
         const password = req.body.password
+        let roomExists = true
 
         /* verificar se a senha esta correta  */
         // o Get traz apenas uma linha
@@ -15,17 +16,18 @@ module.exports = {
             /*o Action vem do slug, dentro da função handleClick main.js*/
             if(action == "delete"){
                 await db.run(`DELETE FROM questions where id = ${questionId}`)
+                await db.close()
             }else if(action == "check"){
                 await db.run(`UPDATE questions set read = 1 WHERE id = ${questionId}`)
-            }
+                await db.close()
+            }            
             
+            return res.redirect(`/room/${roomId}`)
 
-            res.redirect(`/room/${roomId}`)
-
-        }
-       
-
-        res.render('passincorrect', {roomId: roomId})
+        }              
+        await db.close()
+        
+        return res.render('passincorrect', {roomId: roomId, roomExists: roomExists})
 
       
     },
@@ -46,7 +48,8 @@ module.exports = {
         )`)
 
         await db.close()
-        res.redirect(`/room/${roomId}`)
+
+        return res.redirect(`/room/${roomId}`)
 
     }
 }

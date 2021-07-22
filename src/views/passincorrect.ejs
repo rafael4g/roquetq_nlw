@@ -1,9 +1,14 @@
-<html>
-  <head>
-    <title>Senha incorreta</title>
+<!DOCTYPE html>
+<html lang="pt_br">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Senha incorreta</title>
     <script>
       confirm("Senha incorreta")
-      window.location.replace("/room/<%= roomId %>")
+      const isRoomExists = "<%= roomExists %>"      
+      isRoomExists ? window.location.replace("/room/<%= roomId %>") : window.location.replace("/")
     </script>
   </head>
 </html>
